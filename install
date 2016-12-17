@@ -3,8 +3,8 @@ if (php_sapi_name() !== 'cli') exit('It\'s no cli!');
 
 $config = dirname(dirname(dirname(__DIR__))).'/Config/Database.php';
 
-if(is_file($config)) return "\n--- Database configuration file already exists!\n";
-if(!is_dir(dirname($config))) return "\n\n--- Configuration file for Database not instaled!\n\n";
+if(is_file($config)) return "\n--- Database configuration file already exists!";
+if(!is_dir(dirname($config))) return "\n--- Configuration file for Database not instaled!";
 
 $data = <<<'EOD'
 <?php
@@ -86,4 +86,4 @@ EOD;
 
 file_put_contents($config, $data);
 
-return "\n\n--- Database instaled!\n\n";
+return "\n--- Database instaled!";
