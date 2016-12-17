@@ -1,0 +1,26 @@
+{
+    "name": "devbr/database",
+    "description": "Simple database node",
+    "keywords": ["db", "mysql","oracle","database"],
+    "license": "MIT",
+    "type": "library",
+    "homepage": "http://paulorocha.tk/devbr/",
+    "authors": [{
+        "name": "Bill Rocha",
+        "email": "prbr@ymail.com"
+    }],
+    "config": {
+        "preferred-install": "dist"
+    },
+    "archive": {
+        "exclude": ["/doc", "/*.json", "/.git", "/*.md"]
+    },
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-0": {"Lib": "/"}
+    }
+}
