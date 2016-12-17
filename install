@@ -1,10 +1,10 @@
 <?php
 if (php_sapi_name() !== 'cli') exit('It\'s no cli!');
-print_r($argv);
 
 $dbConfig = dirname(dirname(dirname(__DIR__))).'/Config/Database.php';
 
-if(!is_dir(dirname($dbConfig))) exit("\n\n--- Configuration file for Database not instaled!\n\n");
+if(is_file($dbConfig)) return "\n--- Database configuration file already exists!\n";
+if(!is_dir(dirname($dbConfig))) return "\n\n--- Configuration file for Database not instaled!\n\n";
 
 $data = <<<'EOD'
 <?php
@@ -46,13 +46,13 @@ namespace Config;
 
 class Database
 {
-	static $config = ['mysql'=>['dsn'=>'mysql:host=localhost;dbname=dbName;charset=utf8',
-						 		'user'=>'userName',
-						 		'passw'=>'password'
-						 	   ],
-			   		  'sqlite'=>['dsn'=>'sqlite.db']
-			   		 ];
-	static $default = 'mysql';
+    static $config = ['mysql'=>['dsn'=>'mysql:host=localhost;dbname=dbName;charset=utf8',
+                                'user'=>'userName',
+                                'passw'=>'password'
+                               ],
+                      'sqlite'=>['dsn'=>'sqlite.db']
+                     ];
+    static $default = 'mysql';
 
     //Configuração da tabela de usuário | Lib\User
     static $userTable = ['table'=>'usuario',
@@ -67,15 +67,15 @@ class Database
     
     static function get($alias = null)
     {
-    	if($alias === null) return static::$config[static::$default];
-    	if(isset(static::$config[$alias])) return static::$config[$alias];
-    	else return false;
+        if($alias === null) return static::$config[static::$default];
+        if(isset(static::$config[$alias])) return static::$config[$alias];
+        else return false;
     }
 
     static function getDefault()
     {
-    	return static::$default;
-	}
+        return static::$default;
+    }
 
     static function getUserConfig()
     {
@@ -86,4 +86,4 @@ EOD;
 
 file_put_contents($dbConfig, $data);
 
-echo "\n\n--- Database instaled!\n\n";
+return "\n\n--- Database instaled!\n\n";
