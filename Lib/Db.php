@@ -60,7 +60,7 @@ class Db
         }
     }
 
-    function connect()
+    function connect($alias = null)
     { 
         if($this->conn == null)
             try{
@@ -76,10 +76,10 @@ class Db
         return $this->conn;
     }
 
-    function query($sql, $parms = array())
+    function query($sql, $parms = array(), $alias = null)
     {
         $this->sql = $sql;
-        $sth = $this->connect()->prepare($sql);
+        $sth = $this->connect($alias)->prepare($sql);
         $sth->execute($parms);
         $this->rows = $sth->rowCount();
         $this->error[$sql] = $sth->errorInfo();

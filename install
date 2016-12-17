@@ -1,5 +1,6 @@
 <?php
 if (php_sapi_name() !== 'cli') exit('It\'s no cli!');
+print_r($argv);
 
 $dbConfig = dirname(dirname(dirname(__DIR__))).'/Config/Database.php';
 
