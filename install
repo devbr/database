@@ -3,6 +3,8 @@ if (php_sapi_name() !== 'cli') exit('It\'s no cli!');
 
 $dbConfig = dirname(dirname(dirname(__DIR__))).'/Config/Database.php';
 
+if(!is_dir(dirname($dbConfig))) exit("\n\n--- Configuration file for Database not instaled!\n\n");
+
 $data = <<<'EOD'
 <?php
 /**
