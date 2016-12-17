@@ -22,5 +22,8 @@
     },
     "autoload": {
         "psr-0": {"Lib": "/"}
+    },
+    "scripts": {
+        "post-install-cmd":         ["php install"]
     }
 }
