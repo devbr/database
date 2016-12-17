@@ -14,7 +14,7 @@ $data = <<<'EOD'
  * @license     MIT
  * @author      Bill Rocha - prbr@ymail.com
  * @version     0.0.1
- * @package     Config\Neos
+ * @package     Config
  * @access      public
  * @since       0.3.0
  *
