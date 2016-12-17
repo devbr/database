@@ -22,10 +22,5 @@
     },
     "autoload": {
         "psr-0": {"Lib": "/"}
-    },
-    "scripts": {
-        "post-install-cmd":         ["php install"],
-        "post-update-cmd":          ["php install update"],
-        "post-create-project-cmd":  ["php install create-project"]
     }
 }
