@@ -1,228 +1,283 @@
 <?php
 /**
- * Lib - less is more in PHP
- * @copyright   Bill Rocha - http://google.com/+BillRocha
- * @license     MIT
- * @author      Bill Rocha - prbr@ymail.com
- * @version     0.0.1
- * @package     Util
- * @access      public
- * @since       0.3.0
+ * Lib\User
+ * PHP version 7
  *
- * The MIT License
- *
- * Copyright 2015 http://google.com/+BillRocha.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * @category  Database
+ * @package   Util
+ * @author    Bill Rocha <prbr@ymail.com>
+ * @copyright 2016 Bill Rocha <http://google.com/+BillRocha>
+ * @license   <https://opensource.org/licenses/MIT> MIT
+ * @version   GIT: 0.0.1
+ * @link      http://paulorocha.tk/github/devbr
  */
 
 namespace Lib;
 
 use Lib\Db;
 
-
+/**
+ * User Class
+ *
+ * @category Database
+ * @package  Util
+ * @author   Bill Rocha <prbr@ymail.com>
+ * @license  <https://opensource.org/licenses/MIT> MIT
+ * @link     http://paulorocha.tk/github/devbr
+ */
 class User
 {
-	static $node = null;
+    public static $node = null;
 
-	private $login = false;
-	private $data = ['id'=>null,
-					 'name'=>null,
-					 'token'=>null,
-					 'life'=>null,
-					 'login'=>null,
-					 'password'=>null,
-					 'level'=>null,
-					 'status'=>null];
+    private $_login = false;
+    private $_data = ['id'=>null,
+                     'name'=>null,
+                     'token'=>null,
+                     'life'=>null,
+                     'login'=>null,
+                     'password'=>null,
+                     'level'=>null,
+                     'status'=>null];
 
-	private $db = null;
-	private $dbConfig = ['table'=>'user',
-					     'id'=>'id',
-					     'name'=>'name',
-					     'token'=>'token',
-					     'life'=>'life',
-					     'login'=>'login',
-					     'password'=>'password',
-					     'level'=>'level',
-					     'status'=>'status'];
+    private $_db = null;
+    private $_dbConfig = ['table'=>'user',
+                         'id'=>'id',
+                         'name'=>'name',
+                         'token'=>'token',
+                         'life'=>'life',
+                         'login'=>'login',
+                         'password'=>'password',
+                         'level'=>'level',
+                         'status'=>'status'];
 
-
-	function __construct($config = null)
-	{
-		if($config !== null){
-			foreach($config as $i=>$d){
-				if(isset($this->dbConfig[$i])) $this->dbConfig[$i] = $d;
-			}
-		} elseif(method_exists('Config\Database', 'getUserConfig')){
-            $this->dbConfig = \Config\Database::getUserConfig();
+    /**
+     * Constructor
+     *
+     * @param array|null $config Configuration data (or null)
+     */
+    public function __construct($config = null)
+    {
+        if ($config !== null) {
+            foreach ($config as $i => $d) {
+                if (isset($this->_dbConfig[$i])) {
+                    $this->_dbConfig[$i] = $d;
+                }
+            }
+        } elseif (method_exists('Config\Neos\Database', 'getUserConfig')) {
+            $this->_dbConfig = \Config\Neos\Database::getUserConfig();
         }
 
-		$this->db = new Db;		
-	}
+        $this->_db = new Db;
+    }
 
-	/**
+    /**
      * Singleton instance
      *
+     * @return object this
      */
-    static function this()
+    public static function this()
     {
-        if(is_object(static::$node)) return static::$node;
+        if (is_object(static::$node)) {
+            return static::$node;
+        }
         //else...
         list($config) = array_merge(func_get_args(), [null]);
         return static::$node = new static($config);
     }
 
-	/**
+    /**
      * Initialize user
+     *
+     * @param string $login    user login
+     * @param string $password user password
+     *
+     * @return bool            True/false to login
      */
-    function doLogin($login, $password)
+    public function doLogin($login, $password)
     {
-    	$this->db->query('SELECT * FROM '.$this->dbConfig['table']
-    					  .' WHERE '.$this->dbConfig['login'].' = :lg AND '.$this->dbConfig['password'].' = :pw', [':lg'=>$login, ':pw'=>$password]);
+        $this->_db->query(
+            'SELECT * FROM '.$this->_dbConfig['table']
+            .' WHERE '.$this->_dbConfig['login'].' = :lg 
+               AND '.$this->_dbConfig['password'].' = :pw',
+            [':lg'=>$login, ':pw'=>$password]
+        );
 
-    	$row = $this->db->result();
-    	if(isset($row[0])){
-    		$row = $row[0]->getAll();
+        $row = $this->_db->result();
+        if (isset($row[0])) {
+            $row = $row[0]->getAll();
 
-    		foreach($this->data as $i=>$d){
-    			if(isset($row[$this->dbConfig[$i]])) $this->data[$i] = $row[$this->dbConfig[$i]];
-    		}
-    		$this->login = true;
-    		return true;
-    	}
-    	$this->login = false;
-    	return false;
+            foreach ($this->_data as $i => $d) {
+                if (isset($row[$this->_dbConfig[$i]])) {
+                    $this->_data[$i] = $row[$this->_dbConfig[$i]];
+                }
+            }
+            $this->_login = true;
+            return true;
+        }
+        $this->_login = false;
+        return false;
     }
 
     /**
      * Performer LOGOUT
+     *
+     * @param integer $id the ID from user
+     *
+     * @return array     Array of data from user login
      */
-    function logout($id = null){
-    	if($id !== null) $this->data['id'] = $id;
+    public function logout($id = null)
+    {
+        if ($id !== null) {
+            $this->_data['id'] = $id;
+        }
 
-    	//Reset
-    	$this->data['life'] = 0;
-    	$this->data['token'] = md5(microtime());
-    	
-    	$this->db->query('UPDATE '.$this->dbConfig['table']
-    					 .' SET '.$this->dbConfig['token'].'="'
-    					 .$this->data['token'].'", '
-    					 .$this->dbConfig['life'].' = "'
-    					 .$this->data['life'].'" WHERE '
-    					 .$this->dbConfig['id'].' = '
-    					 .$this->data['id']);
+        //Reset
+        $this->_data['life'] = 0;
+        $this->_data['token'] = md5(microtime());
+        
+        $this->_db->query(
+            'UPDATE '.$this->_dbConfig['table']
+                         .' SET '.$this->_dbConfig['token'].'="'
+                         .$this->_data['token'].'", '
+                         .$this->_dbConfig['life'].' = "'
+                         .$this->_data['life'].'" WHERE '
+                         .$this->_dbConfig['id'].' = '
+            .$this->_data['id']
+        );
     }
 
     /**
      * Initialize user by ID
+     *
+     * @param integer $id the ID
+     *
+     * @return bool|string     false or $this->_data by ID
      */
-    function getById($id)
+    public function getById($id)
     {
-    	$this->db->query('SELECT * FROM '.$this->dbConfig['table']
-    					  .' WHERE '.$this->dbConfig['id'].' = :id', 
-    					  [':id'=>$id]);
-    	$row = $this->db->result();
-    	if(isset($row[0])){
-    		$row = $row[0]->getAll();
+        $this->_db->query(
+            'SELECT * FROM '.$this->_dbConfig['table']
+                          .' WHERE '.$this->_dbConfig['id'].' = :id',
+            [':id'=>$id]
+        );
+        $row = $this->_db->result();
+        if (isset($row[0])) {
+            $row = $row[0]->getAll();
 
-            $this->login = true; //Setando LOGIN como válido/logado
+            $this->_login = true; //Setando LOGIN como válido/logado
 
-    		foreach($this->data as $i=>$d){
-    			if(isset($row[$this->dbConfig[$i]])) $this->data[$i] = $row[$this->dbConfig[$i]];
-    		}
-    		return $this->data;
-    	}
-    	return false;
+            foreach ($this->_data as $i => $d) {
+                if (isset($row[$this->_dbConfig[$i]])) {
+                    $this->_data[$i] = $row[$this->_dbConfig[$i]];
+                }
+            }
+            return $this->_data;
+        }
+        return false;
     }
 
 
     /**
      * Set TOKEN data key
+     *
+     * @param string $token The TOKEN string
+     *
+     * @return bool        False/true for ok
      */
-    function saveToken($token)
+    public function saveToken($token)
     {
-    	$rows = $this->db->query('UPDATE '.$this->dbConfig['table']
-    					.' SET '.$this->dbConfig['token'].' = :tk'
-    					.' WHERE '.$this->dbConfig['id'].' = :id',
-    					[':tk'=>$token, ':id'=>$this->data['id']]);
-    	if($rows > 0){
-    		$this->data['token'] = $token;
-    		return true;
-    	}
-    	return false;
+        $rows = $this->_db->query(
+            'UPDATE '.$this->_dbConfig['table']
+                        .' SET '.$this->_dbConfig['token'].' = :tk'
+                        .' WHERE '.$this->_dbConfig['id'].' = :id',
+            [':tk'=>$token, ':id'=>$this->_data['id']]
+        );
+        if ($rows > 0) {
+            $this->_data['token'] = $token;
+            return true;
+        }
+        return false;
     }
 
-    function getToken($id){
-        $row = $this->db->query('SELECT token FROM '.$this->dbConfig['table']
-                          .' WHERE '.$this->dbConfig['id'].' = :id', 
-                          [':id'=>$id]);
-        if(isset($row[0])){
+    /**
+     * Get Token by id
+     *
+     * @param integer $id The user ID (integer)
+     *
+     * @return bool|string     return TOKEN or false
+     */
+    public function getToken($id)
+    {
+        $row = $this->_db->query(
+            'SELECT token FROM '.$this->_dbConfig['table']
+                          .' WHERE '.$this->_dbConfig['id'].' = :id',
+            [':id'=>$id]
+        );
+        if (isset($row[0])) {
             $row = $row[0]->getAll();
-            return $row[$this->dbConfig['token']];
+            return $row[$this->_dbConfig['token']];
         }
         return false;
     }
 
     /**
      * Universal GET
-     * If $node == null return ALL data (array)
+     *
+     * @param string $node null return ALL data (array)
+     *
+     * @return array    return $this->_data
      */
-    function get($node = null)
+    public function get($node = null)
     {
-        if($node === null) return $this->data;
-    	return (isset($this->data[$node])) ? $this->data[$node] : false; 
+        if ($node === null) {
+            return $this->_data;
+        }
+        return (isset($this->_data[$node])) ? $this->_data[$node] : false;
     }
 
     /**
      * Universal SET
      *
-     * @param array|string $node Se for um array, grava todos os dados
-     *                           Se for um string e existir, grava $value
+     * @param array|string   $node  Se for um array, grava todos os dados
+     *                              Se for um string e existir, grava $value
+     *                              Se for um string e existir, grava $value
+     *                              Se for um string e existir, grava $value
      * @param string|integer $value [optional] valor a ser gravado
      *
-     * @return  object (this)
+     * @return object (this)
      */
-    function set($node, $value = null)
+    public function set($node, $value = null)
     {
-    	if(!is_array($node)) $node[$node] = $value;
-    	foreach($node as $i=>$d){
-    		if(isset($this->data[$i])) $this->data[$i] = $d;    	
-    	}
-    	return $this;
+        if (!is_array($node)) {
+            $node[$node] = $value;
+        }
+        foreach ($node as $i => $d) {
+            if (isset($this->_data[$i])) {
+                $this->_data[$i] = $d;
+            }
+        }
+        return $this;
     }
 
 
     /**
      * Save this USER on DataBase
-     * 
+     *
      * @param Integer $id [optional] set a ID from this user
-     *                    $id = "null" (or none) gera INSERT new user	
-     * @return  Array action = INSERT/UPDATE 
-     *                rows   = 0/1 (0 => indica não salvo)
+     *                    $id = "null" (or none) gera INSERT new user
+     *
+     * @return array      INSERT/UPDATE & rows (0 => indica não salvo)
      */
-    function save($id = null){
-    	//update this user id value
-    	if($id !== null) $this->data['id'] = $id;
+    public function save($id = null)
+    {
+        //update this user id value
+        if ($id !== null) {
+            $this->_data['id'] = $id;
+        }
 
-    	if($this->data['id'] !== null){
+        if ($this->_data['id'] !== null) {
             $action = 'UPDATE ';
-            $where = ' WHERE '.$this->dbConfig['id'].' = :id';
+            $where = ' WHERE '.$this->_dbConfig['id'].' = :id';
         } else {
             $action = 'INSERT INTO ';
             $where = '';
@@ -230,20 +285,20 @@ class User
 
         $cols = '';
         $vals = [];
-        foreach($this->data as $k=>$v){     
-            if($k !== 'id') $cols .= $this->dbConfig[$k].' = :'.$k.',';        
-            $vals[':'.$k] = $v;          
+        foreach ($this->_data as $k => $v) {
+            if ($k !== 'id') {
+                $cols .= $this->_dbConfig[$k].' = :'.$k.',';
+            }
+            $vals[':'.$k] = $v;
         }
         
         $cols = substr($cols, 0, -1); //tirando a ultima vírgula
 
-        $this->db->query($action.$this->dbConfig['table']
-        				.' SET '.$cols.$where, $vals);
+        $this->_db->query(
+            $action.$this->_dbConfig['table']
+            .' SET '.$cols.$where, $vals
+        );
         return ['action'=>substr($action, 0, 5),
-        		'rows'=>$this->db->getRows()];
+                'rows'=>$this->_db->getRows()];
     }
-
-
-
-
 }
