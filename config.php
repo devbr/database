@@ -1,13 +1,4 @@
 <?php
-if (php_sapi_name() !== 'cli') exit('It\'s no cli!');
-
-$config = dirname(dirname(dirname(__DIR__))).'/Config/Database.php';
-
-if(is_file($config)) return "\n--- Database configuration file already exists!";
-if(!is_dir(dirname($config))) return "\n--- Configuration file for Database not instaled!";
-
-$data = <<<'EOD'
-<?php
 /**
  * Config\Database
  * PHP version 7
@@ -93,8 +84,3 @@ class Database
         return static::$userTable;
     }
 }
-EOD;
-
-file_put_contents($config, $data);
-
-return "\n--- Database instaled!";
