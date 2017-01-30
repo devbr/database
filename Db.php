@@ -71,9 +71,9 @@ class Db
                 );
 
                 $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                trigger_error('Data base not connected!');
             }
-        } catch (PDOException $e) {
-            trigger_error('Data base not connected!');
         }
         if (!is_object($this->conn)) {
             trigger_error('I can not connect to the database', E_USER_ERROR);
