@@ -93,7 +93,7 @@ class User
      *
      * @return bool            True/false to login
      */
-    public function doLogin($login, $password)
+    public function login($login, $password)
     {
         $this->_db->query(
             'SELECT * FROM '.$this->_dbConfig['table']
@@ -176,6 +176,36 @@ class User
         return false;
     }
 
+    /**
+     * Get User by Login
+     *
+     * @param  string $login login name
+     *
+     * @return object|bool        User data or false
+     */
+    public function getByLogin($login)
+    {
+        $this->_db->query(
+            'SELECT * FROM '.$this->_dbConfig['table']
+                          .' WHERE '.$this->_dbConfig['login'].' = :lg',
+            [':lg'=>$login]
+        );
+        $row = $this->_db->result();
+        if (isset($row[0])) {
+            $row = $row[0]->getAll();
+
+            $this->_login = true; //Setando LOGIN como válido/logado
+
+            foreach ($this->_data as $i => $d) {
+                if (isset($row[$this->_dbConfig[$i]])) {
+                    $this->_data[$i] = $row[$this->_dbConfig[$i]];
+                }
+            }
+            return $this->_data;
+        }
+        return false;
+    }
+
 
     /**
      * Set TOKEN data key
@@ -220,6 +250,17 @@ class User
         return false;
     }
 
+
+    /**
+     * Is loged?!
+     *
+     * @return bool true/false for LOGIN
+     */
+    public function loged()
+    {
+        return $this->_login;
+    }
+
     /**
      * Universal GET
      *
@@ -248,8 +289,9 @@ class User
      */
     public function set($node, $value = null)
     {
-        if (!is_array($node)) {
-            $node[$node] = $value;
+        if (!is_array($node)
+            && isset($this->_data[$node])) {
+            $this->_data[$node] = $value;
         }
         foreach ($node as $i => $d) {
             if (isset($this->_data[$i])) {

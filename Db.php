@@ -178,7 +178,6 @@ class Row
                            'parms'=>null,
                            'id'=>null
                           ];
-    public $teste = 'este é um teste';
 
     /**
      * Constructor
