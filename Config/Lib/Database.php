@@ -12,7 +12,7 @@
  * @link      http://paulorocha.tk/devbr
  */
 
-namespace Config;
+namespace Config\Lib;
 
 /**
  * Config\Database Class
