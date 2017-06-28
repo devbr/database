@@ -1,6 +1,6 @@
 <?php
 /**
- * Lib\User
+ * Devbr\User
  * PHP version 7
  *
  * @category  Database
@@ -12,9 +12,9 @@
  * @link      http://paulorocha.tk/devbr
  */
 
-namespace Lib;
+namespace Devbr;
 
-use Lib\Db;
+use Devbr\Database;
 
 /**
  * User Class
@@ -63,11 +63,11 @@ class User
                     $this->_dbConfig[$i] = $d;
                 }
             }
-        } elseif (method_exists('Config\Lib\Database', 'getUserConfig')) {
-            $this->_dbConfig = \Config\Lib\Database::getUserConfig();
+        } elseif (method_exists('Config\Devbr\Database\Database', 'getUserConfig')) {
+            $this->_dbConfig = \Config\Devbr\Database\Database::getUserConfig();
         }
 
-        $this->_db = new Db;
+        $this->_db = new Database;
     }
 
     /**

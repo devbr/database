@@ -13,14 +13,14 @@ Uma simples utilização do Database:
 ```php
 $cfg = [];
 
-$db = new Lib\Db($cfg);
+$db = new Devbr\Database($cfg);
 print_r($db->query('SELECT * FROM TABELA'));
 ```
 
 Se você estiver usando o 'devbr/website' como base do seu projeto é possível extender a configuração na classe 'Config\Database', ficando mais simples o uso:
 
 ```php
-$db = new Lib\Db;
+$db = new Devbr\Database;
 
 $db->query('SELECT * FROM TABELA');
 

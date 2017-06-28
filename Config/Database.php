@@ -12,7 +12,7 @@
  * @link      http://paulorocha.tk/devbr
  */
 
-namespace Config\Lib;
+namespace Config\Devbr;
 
 /**
  * Config\Database Class
@@ -34,7 +34,7 @@ class Database
             ];
     static $default = 'mysql';
 
-    //Configuração da tabela de usuário | Lib\User
+    //Configuração da tabela de usuário | Devbr\User
     static $userTable = ['table'=>'usuario',
                          'id'=>'id',
                          'name'=>'nome',

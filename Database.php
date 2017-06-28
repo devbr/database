@@ -1,6 +1,6 @@
 <?php
 /**
- * Lib\Db
+ * Devbr\Database
  * PHP version 7
  *
  * @category  Database
@@ -12,12 +12,12 @@
  * @link      http://paulorocha.tk/devbr
  */
 
-namespace Lib;
+namespace Devbr;
 
 use PDO;
 
 /**
- * Db Class
+ * Database Class
  *
  * @category Database
  * @package  Data
@@ -25,7 +25,7 @@ use PDO;
  * @license  <https://opensource.org/licenses/MIT> MIT
  * @link     http://paulorocha.tk/devbr
  */
-class Db
+class Database
 {
     private $config =   null;
     
@@ -46,8 +46,8 @@ class Db
     {
         if (is_array($config)) {
             $this->config = $config;
-        } elseif (method_exists('Config\Lib\Database', 'get')) {
-            $this->config = \Config\Lib\Database::get($config);
+        } elseif (method_exists('Config\Devbr\Database\Database', 'get')) {
+            $this->config = \Config\Devbr\Database\Database::get($config);
         } else {
             trigger_error('DataBase configurations not found!');
         }
@@ -99,7 +99,7 @@ class Db
         $this->error[$sql] = $sth->errorInfo();
 
         if ($sth->columnCount() > 0) {
-            return $this->result = $sth->fetchAll(PDO::FETCH_CLASS, "Lib\Row", [$this->sql, $parms]);
+            return $this->result = $sth->fetchAll(PDO::FETCH_CLASS, "Devbr\Row", [$this->sql, $parms]);
         } else {
             $this->result = false;
             return $this->rows;
