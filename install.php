@@ -16,10 +16,16 @@ if (!isset($composer['Config\\'][0])) {
 
 //load composer.json and get the "name" of pack 
 $namespace = @json_decode(file_get_contents(__DIR__.'/composer.json'))->name;
-$appConfig = $composer['Config\\'][0].'/'.$namespace.'/';
+
+$namespace = explode('/', $namespace);
+
+$appConfig = $composer['Config\\'][0].'/';
+
+foreach ($namespace as $value) {
+    $appConfig .= ucfirst($value).'/';
+}
 
 $thisConfig = __DIR__.'/Config/';
-//exit("\n\n\---> $appConfig\n");
 
 if (!is_dir($thisConfig)) {
     ret("I can't find 'Config' directory in this pack!");
