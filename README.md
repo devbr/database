@@ -1,5 +1,11 @@
 # Simple database node
 
+[![Latest Stable Version](https://poser.pugx.org/devbr/website/v/stable)](https://packagist.org/packages/devbr/database)
+[![Latest Unstable Version](https://poser.pugx.org/devbr/website/v/unstable)](https://packagist.org/packages/devbr/database)
+[![License](https://poser.pugx.org/devbr/website/license)](https://packagist.org/packages/devbr/database)
+[![Total Downloads](https://poser.pugx.org/devbr/website/downloads)](https://packagist.org/packages/devbr/database)
+[![Monthly Downloads](https://poser.pugx.org/devbr/website/d/monthly)](https://packagist.org/packages/devbr/database)
+
 To install:
 
 ```shell
