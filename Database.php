@@ -46,8 +46,8 @@ class Database
     {
         if (is_array($config)) {
             $this->config = $config;
-        } elseif (method_exists('Config\Devbr\Database\Database', 'get')) {
-            $this->config = \Config\Devbr\Database\Database::get($config);
+        } elseif (method_exists('Config\Database\Database', 'get')) {
+            $this->config = \Config\Database\Database::get($config);
         } else {
             trigger_error('DataBase configurations not found!');
         }
@@ -99,7 +99,7 @@ class Database
         $this->error[$sql] = $sth->errorInfo();
 
         if ($sth->columnCount() > 0) {
-            return $this->result = $sth->fetchAll(PDO::FETCH_CLASS, "Devbr\Row", [$this->sql, $parms]);
+            return $this->result = $sth->fetchAll(PDO::FETCH_CLASS, __NAMESPACE__.'\Row', [$this->sql, $parms]);
         } else {
             $this->result = false;
             return $this->rows;
