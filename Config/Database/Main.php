@@ -12,7 +12,7 @@
  * @link      http://dbrasil.tk/devbr
  */
 
-namespace Config\Devbr;
+namespace Config\Database;
 
 /**
  * Config\Database Class
@@ -23,7 +23,7 @@ namespace Config\Devbr;
  * @license  <https://opensource.org/licenses/MIT> MIT
  * @link     http://dbrasil.tk/devbr
  */
-class Database
+class Main
 {
     static $config = [
             'mysql'=>[
