@@ -27,9 +27,9 @@ class Main
 {
     static $config = [
             'mysql'=>[
-                'dsn'=>'mysql:host=localhost;dbname=dbName;charset=utf8',
-                'user'=>'userName',
-                'passw'=>'password'],
+                'dsn'=>'mysql:host=localhost;dbname=devbr;charset=utf8',
+                'user'=>'devbr',
+                'passw'=>'devbr#123'],
             'sqlite'=>['dsn'=>'sqlite.db']
             ];
     static $default = 'mysql';
