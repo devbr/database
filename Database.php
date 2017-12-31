@@ -46,7 +46,7 @@ class Database
     {
         if (is_array($config)) {
             $this->config = $config;
-        } elseif (method_exists('Config\Devbr\Database', 'get')) {
+        } elseif (method_exists('\Config\Devbr\Database', 'get')) {
             $this->config = \Config\Devbr\Database::get($config);
         } else {
             trigger_error('DataBase configurations not found!');
