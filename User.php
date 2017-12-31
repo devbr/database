@@ -63,8 +63,8 @@ class User
                     $this->_dbConfig[$i] = $d;
                 }
             }
-        } elseif (method_exists('Config\Database\Main', 'getUserConfig')) {
-            $this->_dbConfig = \Config\Database\Main::getUserConfig();
+        } elseif (method_exists('\Config\Devbr\Database', 'getUserConfig')) {
+            $this->_dbConfig = \Config\Devbr\Database::getUserConfig();
         }
 
         $this->_db = new Database;
