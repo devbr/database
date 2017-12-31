@@ -1,6 +1,6 @@
 <?php
 /**
- * Config\Database
+ * Config\Devbr\Database
  * PHP version 7
  *
  * @category  Database
@@ -12,10 +12,10 @@
  * @link      http://dbrasil.tk/devbr
  */
 
-namespace Config\Database;
+namespace Config\Devbr;
 
 /**
- * Config\Database Class
+ * Config\Devbr\Database Class
  *
  * @category Database
  * @package  Config
@@ -23,7 +23,7 @@ namespace Config\Database;
  * @license  <https://opensource.org/licenses/MIT> MIT
  * @link     http://dbrasil.tk/devbr
  */
-class Main
+class Database
 {
     static $config = [
             'mysql'=>[
